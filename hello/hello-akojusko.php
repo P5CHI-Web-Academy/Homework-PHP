@@ -1,3 +1,3 @@
 <?php
 
-//TODO homework
+echo('Missing arguments.');
