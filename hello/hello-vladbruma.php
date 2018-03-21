@@ -36,7 +36,8 @@ $filterName = function($name) {
 
 // check input count
 if ( $parameterCount < 2 || $parameterCount % 2 == 1) {
-    echo $appendUsageMessage('Invalid number of arguments supplied', $scriptName);
+    echo 'Missing arguments.';
+    //echo $appendUsageMessage('Invalid number of arguments supplied', $scriptName);
     exit(0);
 }
 
@@ -49,7 +50,8 @@ for ( $i = 0; $i < $parameterCount; $i+= 2 ) {
 
     // validate
     if (! $titleIsValid($title)) {
-        echo $appendUsageMessage("Invalid title: '$title'", $scriptName);
+        echo 'Unknown title.';
+        //echo $appendUsageMessage("Invalid title: '$title'", $scriptName);
         exit(0);
     }
 
@@ -58,6 +60,7 @@ for ( $i = 0; $i < $parameterCount; $i+= 2 ) {
 }
 
 // combine pairs and display output
-echo "\nHello " . implode(' and ', $namesArr) . "!\n\n";
 
+//echo "\nHello " . implode(' and ', $namesArr) . "!\n\n";
+echo "Hello " . implode(' and ', $namesArr) . "!";
 
