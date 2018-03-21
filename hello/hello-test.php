@@ -36,10 +36,6 @@ $testData = [
 		'out' => 'Unknown title.',
 	],
 	[
-		'in' => ['m', 'Test1', 'z'],
-		'out' => 'Unknown title.',
-	],
-	[
 		'in' => ['M', 'test1'],
 		'out' => 'Hello Mr Test1!',
 	],
