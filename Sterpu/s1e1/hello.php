@@ -1,7 +1,7 @@
 <?php
 
 if ($_SERVER['argc'] < 3 || $_SERVER['argc'] % 2 == 0) {
-	die('Missing arguments.');
+	die('Missing arguments.' . PHP_EOL);
 }
 
 $result = 'Hello ';
@@ -12,10 +12,10 @@ for ($i = 1; $i < $_SERVER['argc']; $i += 2) {
 	} elseif ($_SERVER['argv'][$i] == 'f' || $_SERVER['argv'][$i] == 'F') {
 		$result .= 'Ms ';
 	} else {
-		die("Incorrect order.");
+		die('Incorrect order.' . PHP_EOL);
 	}
 
 	$result .= ucfirst(strtolower($_SERVER['argv'][$i + 1])) . ' and ';
 }
 
-print(substr($result, 0, -5) . "!\n");
+print(substr($result, 0, -5) . '!' . PHP_EOL);
