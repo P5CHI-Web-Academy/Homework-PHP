@@ -1,9 +1,9 @@
 <?php
 
-class MisterOrMistress {
+class MisterOrMiss {
 
     function checkParity() {
-        if ($_SERVER['argc'] == 1 || $_SERVER['argc'] % 2 == 0) {
+        if ($_SERVER['argc'] == 1 or $_SERVER['argc'] % 2 == 0) {
             echo "Missing arguments.";
             return false;
         } else {
@@ -29,7 +29,7 @@ class MisterOrMistress {
     }
 }
 
-$greeting = new MisterOrMistress();
+$greeting = new MisterOrMiss();
 
 if ($greeting->checkParity()) {
     $greeting->sayHello();
