@@ -33,7 +33,7 @@ function importDataFromDirectory($dirName, $dsn)
         echo 'Processed '.$i.' files '."\n";
 
         $dbConnection = null;
-    } catch (\Exception $exception) {
+    } catch (\Exception | \Error $exception) {
         echo $exception->getMessage();
     }
 }
@@ -81,7 +81,7 @@ function prepareSqliteDatabase($dns)
 
         return true;
 
-    } catch (\Exception $exception) {
+    } catch (\Exception | \Error $exception) {
         echo $exception->getMessage();
 
         return false;

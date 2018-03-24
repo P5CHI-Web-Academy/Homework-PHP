@@ -32,7 +32,7 @@ function exportData($owner, $dsn)
 
         \file_put_contents($path, \json_encode($result, JSON_FORCE_OBJECT | JSON_NUMERIC_CHECK));
 
-    } catch (\Exception $exception) {
+    } catch (\Exception | \Error $exception) {
         echo $exception->getMessage()."\n";
     }
 }
