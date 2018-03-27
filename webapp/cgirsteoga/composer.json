@@ -1,0 +1,14 @@
+{
+  "name": "cgirsteoga/webapp",
+  "license": "mit",
+  "type": "project",
+  "description": "Homework web app",
+  "autoload": {
+    "psr-4": {
+      "Webapp\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.0"
+  }
+}
