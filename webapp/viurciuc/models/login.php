@@ -8,7 +8,6 @@
 
 class login
 {
-    public $tmp;
     private static $instance;
     public $name;
     private $pass;
@@ -33,8 +32,8 @@ class login
     {
         $this->getUserData();
         $result = $this->getDataFromDB();
-        setcookie('auth', $this->name);
-        //$this->tmp = $result;
+        //setcookie('auth', $this->name);
+
         return $this;
     }
 
@@ -57,7 +56,7 @@ class login
     private function getDataFromDB(): array
     {
         $dbh     = new \PDO('sqlite:database.sqlite');
-        $prepare = $this->$dbh->prepare('SELECT * FROM users');
+        $prepare = $this->$dbh->prepare('SELECT * FROM users'); //нужно поправить запрос
         $prepare->execute();
 
         return $prepare->fetchAll();
@@ -82,4 +81,4 @@ class login
 
 }
 
-var_dump(login::getInstance()->run()->tmp);
+login::getInstance()->redirect()->run();
