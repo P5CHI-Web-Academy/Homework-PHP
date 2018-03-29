@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Services\API\GitInterface;
 use App\Services\AuthService;
 
 class LoginController extends AbstractController
@@ -10,15 +11,27 @@ class LoginController extends AbstractController
      * @var AuthService
      */
     private $auth;
+    /**
+     * @var GitInterface
+     */
+    private $gitService;
 
-    public function __construct(AuthService $auth)
+    /**
+     * @param AuthService $auth
+     * @param GitInterface $gitService
+     */
+    public function __construct(AuthService $auth, GitInterface $gitService)
     {
         $this->auth = $auth;
+        $this->gitService = $gitService;
     }
 
     public function index(array $request = [])
     {
         if ($this->auth->isAuthenticated()) {
+            $_SESSION['userGitLink'] =
+                $_SESSION['userGitLink'] ?? $this->gitService->getProfileLink($_SESSION['username']);
+
             include $this->templatePath . 'main/index.php';
 
             return;
@@ -49,3 +62,4 @@ class LoginController extends AbstractController
         $this->redirect($_SERVER['HTTP_HOST']);
     }
 }
+
