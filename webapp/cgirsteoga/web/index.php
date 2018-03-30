@@ -2,5 +2,9 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-$webapp = new \Webapp\Webapp();
-$webapp->hello($_GET['name'] ?? 'all');
+try {
+    $webapp = new \Webapp\WebApp();
+    $webapp->run();
+} catch (\Throwable $exception) {
+    echo $exception->getMessage();
+}
