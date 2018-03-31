@@ -30,9 +30,7 @@ class LoginController
     public function index()
     {
         if ($this->auth->isAuthenticated()) {
-            include
-            $tpl = new Template\Template($this->templatePath.'main/index.php');
-            $tpl->render([$_SESSION['username'] => 'username']);
+            include $this->templatePath.'main/index.php';
 
             return;
         }
