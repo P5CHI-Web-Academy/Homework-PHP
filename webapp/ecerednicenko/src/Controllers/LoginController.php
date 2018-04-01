@@ -10,7 +10,7 @@ use App\Models\User;
  */
 class LoginController
 {
-    public function checkLoginData()
+    public function postLogin()
     {
         $login = $_POST['login'];
         $password = $_POST['password'];
@@ -18,14 +18,24 @@ class LoginController
         $dataVerification = new User;
 
         if ($dataVerification->loginValidator($login, $password)) {
-            $content = file_get_contents(dirname(__DIR__).'/Views/afterLogin/index.php');
-            $content = preg_replace('/{login}/', $login, $content);
-            echo $content;
-            return;
+
+            $_SESSION['name'] = $login;
+            $_SESSION['auth'] = 'Success';
+
+            header("Location: /");
         } else {
-            $_SESSION['flash'] = 'Я вас не звал!';
             header('Location: /?status=error');
         }
+    }
+
+
+    public function logout()
+    {
+        if (!empty($_SESSION)) {
+            unset($_SESSION['auth']);
+            unset($_SESSION['name']);
+        }
+        header('Location: /');
     }
 
 }

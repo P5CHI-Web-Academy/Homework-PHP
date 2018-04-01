@@ -28,7 +28,6 @@ class User
         }
     }
 
-
     /**
      * @param $login
      * @param $password
@@ -43,7 +42,6 @@ class User
         $query->execute([':login' => $login, ':password' => $password]);
 
         $count = $query->fetch(\PDO::FETCH_NUM)[0];
-
 
         return !!$count;
     }

@@ -17,5 +17,8 @@
     <h1>
         Hello, {login}!
     </h1>
+    <form action="/logout" method="post">
+        <input type="submit" name="submit" value="Logout" class="btn btn-warning">
+    </form>
 </div>
 </body>
