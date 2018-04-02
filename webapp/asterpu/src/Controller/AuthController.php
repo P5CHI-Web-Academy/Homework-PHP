@@ -11,6 +11,7 @@ namespace WebApp\Controller;
 use Aura\Session\Session;
 use Twig_Environment;
 use WebApp\Model\UserRepository;
+use WebApp\GitHubUserChecker;
 
 /**
  * Class AuthController
@@ -59,7 +60,10 @@ class AuthController
                 $this->session->set('user_id', $user->getId());
                 $this->session->set('user_name', $user->getName());
                 $this->session->set('user_email', $user->getEmail());
+                $this->session->set('gh_profile', GitHubUserChecker::hasGitHubProfile($user->getName()));
+
                 header('Location: /');
+                
                 return;
             } else {
                 $loginError = 'Неправильный логин или пароль';

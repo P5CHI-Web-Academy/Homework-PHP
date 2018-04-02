@@ -15,6 +15,11 @@ namespace WebApp;
 class UserSeeder
 {
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @var \PDO
      */
     private $db;
@@ -23,8 +28,9 @@ class UserSeeder
      * UserSeeder constructor.
      * @param \PDO $db
      */
-    public function __construct(\PDO $db)
+    public function __construct(Config $config, \PDO $db)
     {
+        $this->config = $config;
         $this->db = $db;
     }
 
@@ -32,9 +38,10 @@ class UserSeeder
      * @param bool $force
      * @return bool
      */
-    public function installIfNeeded($force = false)
+    public function seedIfNeed($force = false)
     {
-        $filepath = substr(DSN, strpos(DSN, ":") + 1);
+        $dsn = $this->config->DSN;
+        $filepath = substr($dsn, strpos($dsn, ":") + 1);
 
         if (\file_exists($filepath) and filesize($filepath) and !$force) {
             return false;

@@ -24,6 +24,12 @@ class HomeController
     private $twig;
 
     /**
+     * @var Session
+     */
+    private $session;
+
+
+    /**
      * HomeController constructor.
      * @param Twig_Environment $twig
      * @param Session $session
@@ -39,8 +45,11 @@ class HomeController
      */
     public function index()
     {
-        if ($this->session->get('user_name', false)) {
-            echo $this->twig->render('welcome.twig', ['user_name' => $this->session->get('user_name')]);
+        if ($user_name = $this->session->get('user_name', false)) {
+            echo $this->twig->render('welcome.twig', [
+                'user_name' => $user_name, 
+                'gh_profile' =>  $this->session->get('gh_profile')
+            ]);
         } else {
             echo $this->twig->render('login.twig');
         }
