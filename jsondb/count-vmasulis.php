@@ -2,6 +2,7 @@
 if ($_SERVER['argc'] !== 2) {
     exit('Only one argument is accepted.');
 }
+
 $GLOBALS['owner'] = $_SERVER['argv'][1];
 $GLOBALS['path'] = "report".DIRECTORY_SEPARATOR.$owner;
 
@@ -10,6 +11,7 @@ if (!is_dir($path)) {
 }
 
 $owner_data = [];
+
 try {
 	$db = new \PDO('sqlite:mess.db');
 	if (!$db) exit("Could not open database!");
