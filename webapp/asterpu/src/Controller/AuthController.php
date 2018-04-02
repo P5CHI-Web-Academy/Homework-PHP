@@ -60,7 +60,7 @@ class AuthController
                 $this->session->set('user_name', $user->getName());
                 $this->session->set('user_email', $user->getEmail());
                 header('Location: /');
-                die();
+                return;
             } else {
                 $loginError = 'Неправильный логин или пароль';
             }

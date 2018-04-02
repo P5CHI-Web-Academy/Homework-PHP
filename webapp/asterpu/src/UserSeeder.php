@@ -88,15 +88,15 @@ class UserSeeder
     protected function getSeeds()
     {
         return [
-            ['name' => 'user1', 'email' => 'user@user1.com', 'password' => \hash('sha256', 'user1')],
-            ['name' => 'user2', 'email' => 'user@user2.com', 'password' => \hash('sha256', 'user2')],
-            ['name' => 'user3', 'email' => 'user@user3.com', 'password' => \hash('sha256', 'user3')],
-            ['name' => 'user4', 'email' => 'user@user4.com', 'password' => \hash('sha256', 'user4')],
-            ['name' => 'user5', 'email' => 'user@user5.com', 'password' => \hash('sha256', 'user5')],
-            ['name' => 'user6', 'email' => 'user@user6.com', 'password' => \hash('sha256', 'user6')],
-            ['name' => 'user7', 'email' => 'user@user7.com', 'password' => \hash('sha256', 'user7')],
-            ['name' => 'user8', 'email' => 'user@user8.com', 'password' => \hash('sha256', 'user8')],
-            ['name' => 'user9', 'email' => 'user@user9.com', 'password' => \hash('sha256', 'user9')],
+            ['name' => 'user1', 'email' => 'user@user1.com', 'password' => \password_hash('user1', PASSWORD_BCRYPT)],
+            ['name' => 'user2', 'email' => 'user@user2.com', 'password' => \password_hash('user2', PASSWORD_BCRYPT)],
+            ['name' => 'user3', 'email' => 'user@user3.com', 'password' => \password_hash('user3', PASSWORD_BCRYPT)],
+            ['name' => 'user4', 'email' => 'user@user4.com', 'password' => \password_hash('user4', PASSWORD_BCRYPT)],
+            ['name' => 'user5', 'email' => 'user@user5.com', 'password' => \password_hash('user5', PASSWORD_BCRYPT)],
+            ['name' => 'user6', 'email' => 'user@user6.com', 'password' => \password_hash('user6', PASSWORD_BCRYPT)],
+            ['name' => 'user7', 'email' => 'user@user7.com', 'password' => \password_hash('user7', PASSWORD_BCRYPT)],
+            ['name' => 'user8', 'email' => 'user@user8.com', 'password' => \password_hash('user8', PASSWORD_BCRYPT)],
+            ['name' => 'user9', 'email' => 'user@user9.com', 'password' => \password_hash('user9', PASSWORD_BCRYPT)],
         ];
     }
 }
