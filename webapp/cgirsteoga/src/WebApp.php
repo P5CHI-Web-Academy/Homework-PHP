@@ -2,6 +2,8 @@
 
 namespace Webapp;
 
+use Webapp\Client\CurlClient;
+use Webapp\Client\GitHub\Client;
 use Webapp\Model\PasswordHelper;
 use Webapp\Model\UserDAO;
 use Webapp\Model\Router;
@@ -48,6 +50,8 @@ class WebApp
         $this->services->add('template', new Template());
         $this->services->add('router', new Router($this->services));
         $this->services->add('session', new Session());
+        $this->services->add('http_client', new CurlClient());
+        $this->services->add('github_client', new Client($this->services->get('http_client')));
         $this->services->add('pass_helper', new PasswordHelper());
         $this->services->add(
             'security',

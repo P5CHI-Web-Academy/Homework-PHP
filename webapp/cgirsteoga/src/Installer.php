@@ -142,6 +142,7 @@ class Installer
             ['user_name' => 'user7', 'password' => 'user7', 'fullName' => 'User 7'],
             ['user_name' => 'user8', 'password' => 'user8', 'fullName' => 'User 8'],
             ['user_name' => 'user9', 'password' => 'user9', 'fullName' => 'User 9'],
+            ['user_name' => 'user45545', 'password' => 'user45545', 'fullName' => 'User without GitHub account'],
         ];
     }
 }

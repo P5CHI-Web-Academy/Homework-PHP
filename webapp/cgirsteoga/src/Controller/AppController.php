@@ -20,9 +20,24 @@ class AppController extends AbstractController
 
         $user = $security->getLoggedUser();
 
+        $profileLink = $this->services->get('github_client')
+                ->getProfileLink($user->getUserName()) ?? '';
+
+        $profile = '';
+        if ($profileLink) {
+            $profile = $this->renderPartial(
+                'profile.html',
+                [
+                    'link' => $profileLink,
+                    'linkTitle' => sprintf('%s Profile', $user->getFullName()),
+                ]
+            );
+        }
+
         $result = [
-            'title' => 'Hello',
+            'title' => sprintf('Hello %s', $user->getFullName()),
             'fullName' => $user->getFullName(),
+            'profile' => $profile,
         ];
 
         return $this->render('index.html', $result);

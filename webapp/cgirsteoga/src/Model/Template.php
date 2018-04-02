@@ -15,8 +15,7 @@ class Template
      */
     public function render(string $template, array $vars = [])
     {
-        $templateContent = $this->loadTemplate($template);
-        $templateContent = $this->replacePlaceholders($templateContent, $vars);
+        $templateContent = $this->renderPartial($template, $vars);
 
         $baseTemplate = $this->loadTemplate('base.html');
         $templateData = array_merge(['body' => $templateContent], $vars);
@@ -25,6 +24,21 @@ class Template
 
         return $result;
     }
+
+    /**
+     * @param string $template
+     * @param array $vars
+     * @throws \Exception
+     * @return string
+     */
+    public function renderPartial(string $template, array $vars = [])
+    {
+        $templateContent = $this->loadTemplate($template);
+        $templateContent = $this->replacePlaceholders($templateContent, $vars);
+
+        return $templateContent;
+    }
+
 
     /**
      * @param string $template
