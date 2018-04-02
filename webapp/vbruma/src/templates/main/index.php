@@ -21,6 +21,8 @@
 
     <main role="main" class="inner cover">
         <h1 class="cover-heading">Hello <?php echo (isset($_SESSION['username']) ? $_SESSION['username'] : '') ?></h1>
+        <p>Here is your <a class="alert-link" target="_blank"
+                    href="<?php echo (isset($_SESSION['userGitLink']) ? $_SESSION['userGitLink'] : '#') ?>">git profile</a></p>
         <p class="lead">
             <a href="/logout" class="btn btn-lg btn-secondary">Log out</a>
         </p>

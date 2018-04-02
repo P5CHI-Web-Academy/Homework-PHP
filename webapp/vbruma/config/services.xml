@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <dependencies>
+        <class>
+            <abstract>App\Services\API\GitInterface</abstract>
+            <default>App\Services\API\Github</default>
+        </class>
+    </dependencies>
+</configuration>
+
