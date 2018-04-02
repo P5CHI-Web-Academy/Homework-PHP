@@ -11,16 +11,23 @@ class Security
     protected $session;
     /** @var UserDAO */
     private $userDAO;
+    /** @var PasswordHelper */
+    private $passwordHelper;
 
     /**
      * Security constructor.
      * @param Session $session
      * @param UserDAO $userDAO
+     * @param PasswordHelper $passwordHelper
      */
-    public function __construct(Session $session, UserDAO $userDAO)
-    {
+    public function __construct(
+        Session $session,
+        UserDAO $userDAO,
+        PasswordHelper $passwordHelper
+    ) {
         $this->session = $session;
         $this->userDAO = $userDAO;
+        $this->passwordHelper = $passwordHelper;
     }
 
     /**
@@ -36,7 +43,7 @@ class Security
             return false;
         }
 
-        if ($user->getPassword() !== $password) {
+        if (!$this->passwordHelper->verify($password, $user->getPassword())) {
             return false;
         }
 

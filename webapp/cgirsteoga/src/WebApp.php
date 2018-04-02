@@ -2,6 +2,7 @@
 
 namespace Webapp;
 
+use Webapp\Model\PasswordHelper;
 use Webapp\Model\UserDAO;
 use Webapp\Model\Router;
 use Webapp\Model\Session;
@@ -47,11 +48,13 @@ class WebApp
         $this->services->add('template', new Template());
         $this->services->add('router', new Router($this->services));
         $this->services->add('session', new Session());
+        $this->services->add('pass_helper', new PasswordHelper());
         $this->services->add(
             'security',
             new Security(
                 $this->services->get('session'),
-                $this->services->get('userDAO')
+                $this->services->get('userDAO'),
+                $this->services->get('pass_helper')
             )
         );
     }

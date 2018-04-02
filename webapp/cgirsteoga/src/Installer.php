@@ -2,6 +2,7 @@
 
 namespace Webapp;
 
+use Webapp\Model\PasswordHelper;
 use Webapp\Model\UserDAO;
 
 /**
@@ -117,8 +118,10 @@ class Installer
             $stm = $db->prepare($sql);
 
             echo 'Import demo data'.PHP_EOL;
+            $passwordHelper = new PasswordHelper();
 
             foreach (self::getDemoData() as $entry) {
+                $entry['password'] = $passwordHelper->hash($entry['password']);
                 $stm->execute($entry);
             }
 
