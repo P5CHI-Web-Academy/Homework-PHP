@@ -1,6 +1,6 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Helper;
 
 
 class PasswordHelper
@@ -11,12 +11,7 @@ class PasswordHelper
      */
     public function hash(string $plain)
     {
-        $result = password_hash($plain, PASSWORD_BCRYPT);
-        if (!$result) {
-            throw new \RuntimeException('Could not create password hash');
-        }
-
-        return $result;
+        return \password_hash($plain, PASSWORD_BCRYPT);
     }
 
     /**
@@ -26,6 +21,6 @@ class PasswordHelper
      */
     public function verify(string $plain, string $hash)
     {
-        return password_verify($plain, $hash);
+        return \password_verify($plain, $hash);
     }
 }

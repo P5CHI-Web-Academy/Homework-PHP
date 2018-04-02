@@ -52,7 +52,7 @@ class Client
 
         if ($response->getErrorMessage()) {
             throw new \Exception(
-                sprintf(
+                \sprintf(
                     'Try to call endpoint: %s, and get error: %s',
                     $request->getHost(),
                     $response->getErrorMessage()

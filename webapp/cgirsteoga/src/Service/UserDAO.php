@@ -1,14 +1,15 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Service;
 
+use Webapp\Model\User;
 
 class UserDAO
 {
     const ID = 'id';
     const USER_NAME = 'user_name';
     const PASSWORD = 'password';
-    const FULL_NAME = 'fullName';
+    const FULL_NAME = 'full_name';
 
     const TABLE_NAME = 'users';
     const TABLE_STRUCTURE = [
@@ -18,7 +19,7 @@ class UserDAO
         self::FULL_NAME => 'VARCHAR (100)',
     ];
 
-    const BASE_SELECT_SQL = 'SELECT id, user_name, password, fullName FROM users ';
+    const BASE_SELECT_SQL = 'SELECT '.self::ID.', '.self::USER_NAME.', '.self::PASSWORD.', '.self::FULL_NAME.' FROM '.self::TABLE_NAME.' ';
 
     /** @var \PDO */
     protected $db;

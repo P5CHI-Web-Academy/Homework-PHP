@@ -10,10 +10,4 @@ interface ClientInterface
      * @return array
      */
     public function get(RequestInterface $request);
-
-    /**
-     * @param RequestInterface $request
-     * @return array
-     */
-    public function post(RequestInterface $request);
 }

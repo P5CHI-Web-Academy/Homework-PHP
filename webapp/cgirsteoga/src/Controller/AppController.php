@@ -2,7 +2,7 @@
 
 namespace Webapp\Controller;
 
-use Webapp\Model\Security;
+use Webapp\Service\Security;
 
 class AppController extends AbstractController
 {
@@ -29,13 +29,13 @@ class AppController extends AbstractController
                 'profile.html',
                 [
                     'link' => $profileLink,
-                    'linkTitle' => sprintf('%s Profile', $user->getFullName()),
+                    'linkTitle' => \sprintf('%s Profile', $user->getFullName()),
                 ]
             );
         }
 
         $result = [
-            'title' => sprintf('Hello %s', $user->getFullName()),
+            'title' => \sprintf('Hello %s', $user->getFullName()),
             'fullName' => $user->getFullName(),
             'profile' => $profile,
         ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Service;
 
 
 class Session

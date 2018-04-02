@@ -2,8 +2,8 @@
 
 namespace Webapp;
 
-use Webapp\Model\PasswordHelper;
-use Webapp\Model\UserDAO;
+use Webapp\Helper\PasswordHelper;
+use Webapp\Service\UserDAO;
 
 /**
  * Class Installer
@@ -33,8 +33,9 @@ class Installer
             return;
         }
 
-        if (static::installSqliteDatabase()) {
-            static::importDemoData();
+        if ($db = static::installSqliteDatabase()) {
+            echo 'Import demo data'.PHP_EOL;
+            static::importDemoData($db);
         }
     }
 
@@ -52,7 +53,7 @@ class Installer
 
     /**
      * Install database
-     * @return bool
+     * @return \PDO|null
      */
     protected static function installSqliteDatabase()
     {
@@ -60,43 +61,49 @@ class Installer
             $pathInfo = \pathinfo(static::$sqlLiteDbFile);
             $path = $pathInfo['dirname'];
 
-            if (!is_dir($path)) {
+            if (!\is_dir($path)) {
                 echo 'Creating directory for database'.PHP_EOL;
-                mkdir($path, 0777, true);
+                \mkdir($path, 0777, true);
             }
             echo 'Creating database'.PHP_EOL;
             $db = new \PDO(static::$dsn);
 
-            $fields = UserDAO::TABLE_STRUCTURE;
-            \array_walk(
-                $fields,
-                function (&$data, $field) {
-                    $data = \sprintf('%s %s', $field, $data);
-                }
-            );
-
-            $sql = \sprintf(
-                'CREATE TABLE %s (  %s );',
-                UserDAO::TABLE_NAME,
-                \join(',', $fields)
-            );
             echo 'Creating database structure'.PHP_EOL;
-            $db->query($sql);
+            self::createStructure($db);
 
-            return true;
+            return $db;
 
         } catch (\Throwable $exception) {
             echo $exception->getMessage();
 
-            return false;
+            return null;
         }
     }
 
-    protected static function importDemoData()
+    public static function createStructure(\PDO $db)
+    {
+        $fields = UserDAO::TABLE_STRUCTURE;
+        \array_walk(
+            $fields,
+            function (&$data, $field) {
+                $data = \sprintf('%s %s', $field, $data);
+            }
+        );
+
+        $sql = \sprintf(
+            'CREATE TABLE %s (  %s );',
+            UserDAO::TABLE_NAME,
+            \join(',', $fields)
+        );
+        $db->query($sql);
+    }
+
+    /**
+     * @param \PDO $db
+     */
+    public static function importDemoData(\PDO $db)
     {
         try {
-            $db = new \PDO(static::$dsn);
-
             $tableStructure = UserDAO::TABLE_STRUCTURE;
             unset($tableStructure[UserDAO::ID]);
 
@@ -117,7 +124,6 @@ class Installer
 
             $stm = $db->prepare($sql);
 
-            echo 'Import demo data'.PHP_EOL;
             $passwordHelper = new PasswordHelper();
 
             foreach (self::getDemoData() as $entry) {
@@ -133,16 +139,16 @@ class Installer
     protected static function getDemoData()
     {
         return [
-            ['user_name' => 'user1', 'password' => 'user1', 'fullName' => 'User 1'],
-            ['user_name' => 'user2', 'password' => 'user2', 'fullName' => 'User 2'],
-            ['user_name' => 'user3', 'password' => 'user3', 'fullName' => 'User 3'],
-            ['user_name' => 'user4', 'password' => 'user4', 'fullName' => 'User 4'],
-            ['user_name' => 'user5', 'password' => 'user5', 'fullName' => 'User 5'],
-            ['user_name' => 'user6', 'password' => 'user6', 'fullName' => 'User 6'],
-            ['user_name' => 'user7', 'password' => 'user7', 'fullName' => 'User 7'],
-            ['user_name' => 'user8', 'password' => 'user8', 'fullName' => 'User 8'],
-            ['user_name' => 'user9', 'password' => 'user9', 'fullName' => 'User 9'],
-            ['user_name' => 'user45545', 'password' => 'user45545', 'fullName' => 'User without GitHub account'],
+            ['user_name' => 'user1', 'password' => 'user1', 'full_name' => 'User 1'],
+            ['user_name' => 'user2', 'password' => 'user2', 'full_name' => 'User 2'],
+            ['user_name' => 'user3', 'password' => 'user3', 'full_name' => 'User 3'],
+            ['user_name' => 'user4', 'password' => 'user4', 'full_name' => 'User 4'],
+            ['user_name' => 'user5', 'password' => 'user5', 'full_name' => 'User 5'],
+            ['user_name' => 'user6', 'password' => 'user6', 'full_name' => 'User 6'],
+            ['user_name' => 'user7', 'password' => 'user7', 'full_name' => 'User 7'],
+            ['user_name' => 'user8', 'password' => 'user8', 'full_name' => 'User 8'],
+            ['user_name' => 'user9', 'password' => 'user9', 'full_name' => 'User 9'],
+            ['user_name' => 'user45545', 'password' => 'user45545', 'full_name' => 'User without GitHub account'],
         ];
     }
 }

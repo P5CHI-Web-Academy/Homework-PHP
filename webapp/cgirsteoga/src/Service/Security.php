@@ -1,7 +1,9 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Service;
 
+use Webapp\Model\User;
+use Webapp\Helper\PasswordHelper;
 
 class Security
 {
@@ -83,11 +85,12 @@ class Security
      */
     public function getLoggedUser()
     {
-        if (!$this->getLoggedUserId()) {
+        $userId = $this->getLoggedUserId();
+        if (!$userId) {
             return null;
         }
 
-        return $this->userDAO->getById($this->getLoggedUserId());
+        return $this->userDAO->getById($userId);
     }
 
 }

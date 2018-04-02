@@ -2,7 +2,7 @@
 
 namespace Webapp\Controller;
 
-use Webapp\Model\ServiceContainer;
+use Webapp\Service\ServiceContainer;
 
 class AbstractController
 {
