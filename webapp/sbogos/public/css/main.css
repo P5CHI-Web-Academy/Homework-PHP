@@ -1,0 +1,57 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 21px;
+    font-family: sans-serif;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+input {
+    margin: 5px 0;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    text-indent: 5px;
+}
+
+input[type=submit] {
+    background: transparent;
+    cursor: pointer;
+}
+
+span, label, a {
+    text-transform: uppercase;
+}
+
+label {
+    font-size: 13px;
+    text-align: left;
+}
+
+span {
+    color: darkgrey;
+    margin-bottom: 15px;
+}
+
+a {
+    color: #152140;
+    text-decoration: none;
+    margin: 15px;
+    font-size: 13px;
+}
+
