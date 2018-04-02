@@ -4,7 +4,10 @@
     "type": "project",
     "description": "Homework web app",
     "autoload": {
-        "psr-4": { "Webapp\\": "src/" }
+        "classmap": [
+            "./"
+        ],
+        "files": ["core/helpers.php"]
     },
     "require": {
         "php": ">=7.0"

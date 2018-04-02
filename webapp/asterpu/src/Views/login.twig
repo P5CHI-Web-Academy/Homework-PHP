@@ -1,0 +1,15 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <h1>Авторизация</h1>
+
+    <form method="POST" action="login">
+        <input type="text" name="name" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button class="btn" type="submit" name="action">Отправить</button>
+    </form>
+
+    <p><b>{{ loginError }}</b></p>
+
+{% endblock %}
