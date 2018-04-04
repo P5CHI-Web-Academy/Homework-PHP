@@ -3,10 +3,14 @@
 namespace App\Services;
 
 
-use App\Model\User;
+use App\Model\UserRepository;
 
 class AuthService
 {
+    /**
+     * @var array User info
+     */
+    private $user = [];
 
     /**
      * Check if user is logged in
@@ -31,11 +35,13 @@ class AuthService
             return false;
         }
 
-        $userRepository = new User();
-        $user = $userRepository->getUser($request['username'], $request['password']);
+        $userRepository = new UserRepository();
+        $userInfo = $userRepository->get($request['username'], $request['password']);
 
-        if ($user !== null) {
-            $_SESSION['username'] = $request['username'];
+
+        if ($userInfo !== null) {
+            $this->user = $userInfo;
+            $_SESSION['username'] = $this->user['username'];
 
             return true;
         }
@@ -55,5 +61,13 @@ class AuthService
         }
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function user()
+    {
+        return $this->user;
     }
 }

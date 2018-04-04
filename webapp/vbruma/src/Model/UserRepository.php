@@ -3,7 +3,7 @@
 namespace App\Model;
 
 
-class User extends AbstractModel
+class UserRepository extends AbstractModel
 {
 
     /**
@@ -14,7 +14,7 @@ class User extends AbstractModel
      *
      * @return array|null
      */
-    public function getUser(string $username, string $password):? array
+    public function get(string $username, string $password):? array
     {
         try {
             $statement = $this->db->prepare(
@@ -46,5 +46,6 @@ class User extends AbstractModel
 
         return null;
     }
+
 }
 
