@@ -11,6 +11,7 @@ class User extends AbstractModel
      *
      * @param string $username
      * @param string $password
+     *
      * @return array|null
      */
     public function getUser(string $username, string $password):? array
@@ -20,14 +21,21 @@ class User extends AbstractModel
                 'SELECT username, password FROM users WHERE username = :username'
             );
 
-            $statement->execute([
-                ':username' => $username
-            ]);
+            $statement->execute(
+                [
+                    ':username' => $username,
+                ]
+            );
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-            if (count($result) && password_verify($password, $result[0]['password'])) {
+            if (count($result)
+                && password_verify(
+                    $password,
+                    $result[0]['password']
+                )
+            ) {
                 return [
-                    'username' => $username
+                    'username' => $username,
                 ];
             }
 
