@@ -1,0 +1,23 @@
+{
+  "name": "cgirsteoga/webapp",
+  "license": "mit",
+  "type": "project",
+  "description": "Homework web app",
+  "autoload": {
+    "psr-4": {
+      "Webapp\\": "src/",
+      "Webapp\\Test\\": "test/"
+    }
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "Webapp\\Installer::install"
+    ]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.0"
+  }
+}

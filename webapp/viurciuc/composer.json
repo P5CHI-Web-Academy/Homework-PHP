@@ -1,0 +1,17 @@
+{
+    "name": "god/viurciuc",
+    "license": "mit",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Vladislav Iurciuc",
+            "email": "fletcher6847@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "App\\": "src/" }
+    },
+    "require": {
+        "php": ">=7.1"
+    }
+}

@@ -1,0 +1,11 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <h1>Здравствуйте, {{ user_name }}</h1>
+
+    {% if gh_profile == true %}
+    	<a href="https://github.com/{{ user_name }}" target="_blank">GitHub Profile</a>
+    {% endif %}
+
+{% endblock %}
