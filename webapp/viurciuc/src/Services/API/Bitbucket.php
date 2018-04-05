@@ -42,11 +42,11 @@ class Bitbucket implements GitInterface
      */
     public function getProfileLink($username): string
     {
-        if (empty($userInfo)) {
+        if (empty($this->userInfo)) {
             $this->getUser($username);
         }
 
-        return $this->userInfo['links']['html']['href'];
+        return $this->userInfo['links']['html']['href'] ?? 'https://bitbucket.org/';
     }
 }
 
