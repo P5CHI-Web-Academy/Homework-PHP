@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\service;
 
 use App\model\Client;
 
@@ -18,7 +18,7 @@ class ServiceForAuthorization
         }
 
         $clientInstance = new Client();
-        $client = $clientInstance->getClient($req['client_name'], $req['client_password']);
+        $client = $clientInstance->get($req['client_name'], $req['client_password']);
 
         if($client !== null) {
             $_SESSION['client_name'] = $req['client_name'];

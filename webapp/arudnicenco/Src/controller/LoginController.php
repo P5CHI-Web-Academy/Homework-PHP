@@ -1,54 +1,59 @@
 <?php
 
-namespace App\controller;
+namespace App\сontroller;
 
-use App\view;
-use App\service;
+use App\service\ServiceForAuthorization;
+use App\service\api\GitInterface;
 
 class LoginController
 {
-
-    private $view_path = __DIR__.'/../../Src/view/';
-    private $aut;
-
-    private function makeRedirect($path)
+    private $viewPath = __DIR__ . '/../../Src/view/';
+    private function redirect(string $path)
     {
-        header("Location: http://".$path);
+        header('Location: http://'.$path);
         ob_end_flush();
-
+        die();
     }
 
-    function containIndex()
+    private $auth;
+    private $gitService;
+
+    function __construct(ServiceForAuthorization $auth, GitInterface $gitService)
     {
-        if ($this->isAuth()) {
-            include $this->view_path.'/../../main/index.php';
+        $this->auth = $auth;
+        $this->gitService = $gitService;
+    }
+
+    function index()
+    {
+        if ($this->auth->isAuth()) {
+            $_SESSION['userGitLink'] =
+                $_SESSION['userGitLink'] ?? $this->gitService->getProfileLink($_SESSION['username']);
+
+            include $this->viewPath . '/main/index.php';
+
+            return;
         }
-        include $this->view_path.'/../../login/index.php';
+
+        include $this->viewPath . '/login/index.php';
     }
 
-    function makeLogin($req)
+    function login(array $request = [])
     {
-        $host = $_SERVER['HTTP_HOST'];
-
-        if ($this->aut->isAuth()) {
-            $this->makeRedirect($host);
-        } elseif ($this->aut->makeAuth($req) != true) {
-            $_SESSION['error'] = 'Username and(or) password is invalid!!!';
-            $this->makeRedirect($host);
+        if ($this->auth->isAuth()) {
+            $this->redirect($_SERVER['HTTP_HOST']);
         }
-        $this->makeRedirect($host);
+        if (! $this->auth->makeAuth($request)) {
+            $_SESSION['error'] = 'Username and/or password is invalid';
+            $this->redirect($_SERVER['HTTP_HOST']);
+        }
+
+        $this->redirect($_SERVER['HTTP_HOST']);
     }
 
-    function __construct(ServiceAut $aut)
+    function logout()
     {
-        $this->aut = $aut;
-    }
-
-    function makeLogout()
-    {
-        $host = $_SERVER['HTTP_HOST'];
-
-        $this->aut->makeLogout();
-        $this->makeRedirect($host);
+        $this->auth->logout();
+        $this->redirect($_SERVER['HTTP_HOST']);
     }
 }
