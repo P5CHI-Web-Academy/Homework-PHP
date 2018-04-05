@@ -1,6 +1,6 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Service;
 
 
 class ServiceContainer
@@ -28,12 +28,12 @@ class ServiceContainer
     /**
      * @param string $name
      * @return mixed
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function get(string $name)
     {
         if (!isset($this->services[$name])) {
-            throw new \Exception(sprintf('Service %s not defined', $name));
+            throw new \InvalidArgumentException(\sprintf('Service %s not defined', $name));
         }
 
         return $this->services[$name];

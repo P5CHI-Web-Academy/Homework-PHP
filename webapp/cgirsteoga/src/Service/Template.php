@@ -1,6 +1,6 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Service;
 
 
 class Template
@@ -15,16 +15,30 @@ class Template
      */
     public function render(string $template, array $vars = [])
     {
-        $templateContent = $this->loadTemplate($template);
-        $templateContent = $this->replacePlaceholders($templateContent, $vars);
+        $templateContent = $this->renderPartial($template, $vars);
 
         $baseTemplate = $this->loadTemplate('base.html');
-        $templateData = array_merge(['body' => $templateContent], $vars);
+        $templateData = \array_merge(['body' => $templateContent], $vars);
 
         $result = $this->replacePlaceholders($baseTemplate, $templateData);
 
         return $result;
     }
+
+    /**
+     * @param string $template
+     * @param array $vars
+     * @throws \Exception
+     * @return string
+     */
+    public function renderPartial(string $template, array $vars = [])
+    {
+        $templateContent = $this->loadTemplate($template);
+        $templateContent = $this->replacePlaceholders($templateContent, $vars);
+
+        return $templateContent;
+    }
+
 
     /**
      * @param string $template
@@ -36,7 +50,7 @@ class Template
         $file = self::TEMPLATE_DIR.$template;
 
         if (!\file_exists($file)) {
-            throw new \Exception(sprintf('Could not find template: %s', $template));
+            throw new \Exception(\sprintf('Could not find template: %s', $template));
         }
 
         return \file_get_contents($file);
@@ -49,7 +63,7 @@ class Template
      */
     public function replacePlaceholders(string $templateContent, array $vars)
     {
-        $templateContent = preg_replace_callback(
+        $templateContent = \preg_replace_callback(
             '/\{\{(\w+)}}/',
             function ($match) use ($vars) {
                 $name = $match[1];

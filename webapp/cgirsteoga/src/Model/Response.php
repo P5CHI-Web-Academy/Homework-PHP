@@ -29,12 +29,17 @@ class Response
      */
     public function send()
     {
-        $statusText = static::$statusText[$this->code] ?? 'Unknown status';
-        header(sprintf('HTTP/1.1  %s %s', $this->code, $statusText), true, $this->code);
+        $this->sendHeaders();
 
         echo $this->getContent();
 
         return $this;
+    }
+
+    protected function sendHeaders()
+    {
+        $statusText = static::$statusText[$this->code] ?? 'Unknown status';
+        \header(\sprintf('HTTP/1.1  %s %s', $this->code, $statusText), true, $this->code);
     }
 
     /**
@@ -46,13 +51,10 @@ class Response
     }
 
     /**
-     * @param string $content
-     * @return Response
+     * @return int
      */
-    public function setContent(string $content)
+    public function getCode()
     {
-        $this->content = $content;
-
-        return $this;
+        return $this->code;
     }
 }

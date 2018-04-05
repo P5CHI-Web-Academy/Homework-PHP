@@ -1,7 +1,9 @@
 <?php
 
-namespace Webapp\Model;
+namespace Webapp\Service;
 
+use Webapp\Model\User;
+use Webapp\Helper\PasswordHelper;
 
 class Security
 {
@@ -11,16 +13,23 @@ class Security
     protected $session;
     /** @var UserDAO */
     private $userDAO;
+    /** @var PasswordHelper */
+    private $passwordHelper;
 
     /**
      * Security constructor.
      * @param Session $session
      * @param UserDAO $userDAO
+     * @param PasswordHelper $passwordHelper
      */
-    public function __construct(Session $session, UserDAO $userDAO)
-    {
+    public function __construct(
+        Session $session,
+        UserDAO $userDAO,
+        PasswordHelper $passwordHelper
+    ) {
         $this->session = $session;
         $this->userDAO = $userDAO;
+        $this->passwordHelper = $passwordHelper;
     }
 
     /**
@@ -36,7 +45,7 @@ class Security
             return false;
         }
 
-        if ($user->getPassword() !== $password) {
+        if (!$this->passwordHelper->verify($password, $user->getPassword())) {
             return false;
         }
 
@@ -76,11 +85,12 @@ class Security
      */
     public function getLoggedUser()
     {
-        if (!$this->getLoggedUserId()) {
+        $userId = $this->getLoggedUserId();
+        if (!$userId) {
             return null;
         }
 
-        return $this->userDAO->getById($this->getLoggedUserId());
+        return $this->userDAO->getById($userId);
     }
 
 }
