@@ -27,16 +27,8 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
     <br />
-    <?php
 
-    if (isset($_SESSION['error'])) {
-        echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error'] . '</div>';
-
-        unset($_SESSION['error']);
-    }
-
-    ?>
-
+    <div class="alert alert-danger" role="alert" style="display: {{ errorDisplay }}">{{ error }}</div>
 
 </form>
 </body>

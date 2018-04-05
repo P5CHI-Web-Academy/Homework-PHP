@@ -7,9 +7,9 @@ class AbstractModel
 {
     protected $db;
 
-    public function __construct()
+    public function __construct($dbAdapter = null)
     {
-        $this->db = new \PDO('sqlite:' . DB_PATH);
+        $this->db = $dbAdapter ?? new \PDO('sqlite:' . DB_PATH);
     }
 }
 
