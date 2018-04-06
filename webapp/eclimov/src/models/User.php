@@ -11,15 +11,17 @@ class User extends Model
     {
         $q_user = $this->db_execute(
             '
-            SELECT users.id
+            SELECT 
+              users.id,
+              users.password
             FROM users 
             WHERE 
               users.login = :login
-              AND users.password = :password
         ',
-            array(':login' => $login, ':password' => $password)
+            array(':login' => $login)
         );
-        if (\count($q_user)) {
+
+        if(\count($q_user) && password_verify($password, $q_user[0]['password'])){
             return $q_user[0]['id'];
         }
 
@@ -32,7 +34,8 @@ class User extends Model
             '
             SELECT 
               users.id,
-              users.name
+              users.name,
+              users.login
             FROM users 
             WHERE 
               users.id = :user_id
@@ -40,6 +43,23 @@ class User extends Model
             array(':user_id' => $user_id)
         );
 
-        return $q_user_info[0];
+        return $q_user_info ? $q_user_info[0] : array(); //If empty, return empty array
+    }
+
+    //This method isn't really used in the application yet, but is useful for testing/debugging
+    public function create_user($name, $login, $password): int {
+        $this->db_execute(
+            '
+            INSERT INTO users(name, login, password)
+            VALUES (:name, :login, :password)
+        ',
+            array(
+                ':name'=>$name,
+                ':login'=>$login,
+                ':password'=>password_hash($password, PASSWORD_DEFAULT)
+            )
+        );
+
+        return $this->dbc->lastInsertId();
     }
 }
