@@ -17,6 +17,9 @@
     <h1>
         Hello, {login}!
     </h1>
+
+        {linksContainer}
+
     <form action="/logout" method="post">
         <input type="submit" name="submit" value="Logout" class="btn btn-warning">
     </form>

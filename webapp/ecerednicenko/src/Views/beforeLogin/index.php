@@ -19,23 +19,23 @@
         <h3 align="center">Неверные данные</h3>
     </div>
 <?php endif; ?>
-
-<form action="/login" method="post" class="navbar-form">
-    <div class="form-group input-group">
+<div>
+    <form action="/login" method="post" class="navbar-form">
         <div class="form-group input-group">
-            <span class="input-group-addon">Username</span>
-            <input name="login" type="text" class="form-control" placeholder="test">
-        </div>
-        <br>
-        <br>
-        <div class="form-group input-group">
-            <span class="input-group-addon">Password</span>
-            <input name="password" type="password" class="form-control" placeholder="passwd">
-        </div>
-        <br>
-        <br>
-        <input type="submit" name="submit" value="submit" class="btn btn-info form-controller">
-</form>
+            <div class="form-group input-group">
+                <span class="input-group-addon">Username</span>
+                <input name="login" type="text" class="form-control" placeholder="test">
+            </div>
+            <br>
+            <br>
+            <div class="form-group input-group">
+                <span class="input-group-addon">Password</span>
+                <input name="password" type="password" class="form-control" placeholder="passwd">
+            </div>
+            <br>
+            <br>
+            <input type="submit" name="submit" value="submit" class="btn btn-info form-controller">
+    </form>
 </div>
 
 </body>
