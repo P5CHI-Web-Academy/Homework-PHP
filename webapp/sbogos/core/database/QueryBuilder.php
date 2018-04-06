@@ -10,11 +10,11 @@ class QueryBuilder
         $this->pdo = $pdo;
     }
 
-    public function login($user, $password)
+    public function login($user)
     {
-        $statement = $this->pdo->prepare("select * from users where name = :user and password = :password limit 1");
+        $statement = $this->pdo->prepare("select * from users where name = :user");
 
-        $statement->execute(['user' => $user, 'password' => $password]);
+        $statement->execute(['user' => $user]);
         
         return $statement->fetch(\PDO::FETCH_OBJ);
     }

@@ -8,23 +8,26 @@ class AuthController {
 
     public function index()
     {
+        
         return view('login');
     }
 
 	public function login()
 	{
-        $matched = Registry::get('database')->login($_POST['username'], $_POST['password']);
 
-        if ($matched) {
-            $_SESSION['logged'] = 1;
+        $matched = Registry::get('database')->login($_POST['username']);
+
+    	if (password_verify($_POST['password'], $matched->password)) {
+			$_SESSION['logged'] = 1;
             $_SESSION['user'] = $matched->name;
-        }
+    	}
 
         return redirect('');
 	}
 
 	public function logout()
 	{
+	    
 	    session_unset();
 
 	    return redirect('');
@@ -32,17 +35,21 @@ class AuthController {
 
 	public function register()
 	{
+	    
 	    return view('register');
 	}
 	
 	public function store()
 	{
-        Registry::get('database')->register($_POST['username'], $_POST['password']);
+		
+        Registry::get('database')->register($_POST['username'], bcrypt($_POST['password']));
 
-        $matched = Registry::get('database')->login($_POST['username'], $_POST['password']);
+        $matched = Registry::get('database')->login($_POST['username']);
 
-        $_SESSION['logged'] = 1;
-        $_SESSION['user'] = $matched->name;
+    	if (password_verify($_POST['password'], $matched->password)) {
+			$_SESSION['logged'] = 1;
+            $_SESSION['user'] = $matched->name;
+    	}
 
         return redirect('');
 	}
