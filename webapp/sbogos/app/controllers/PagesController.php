@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\GitHub;
 use App\Core\Registry;
 
 class PagesController {
@@ -14,6 +15,8 @@ class PagesController {
 
         $user = Registry::get('database')->get($_SESSION['user']);
 
-		return view('index', compact('user'));
+        $profile = GitHub::fetch($user->name);
+
+		return view('index', compact('user', 'profile'));
 	}
 }

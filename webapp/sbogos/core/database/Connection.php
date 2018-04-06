@@ -7,7 +7,7 @@ class Connection
     {
         try {
 
-            return new \PDO("sqlite:sbogos.sqlite");
+            return new \PDO('sqlite:../app/database.db');
 
         } catch (\PDOException $e) {
 
