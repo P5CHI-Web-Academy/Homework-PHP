@@ -3,14 +3,14 @@
 namespace App\Model;
 
 
-class User
+class UserRepository
 {
 
     private $db;
 
     public function __construct()
     {
-        $this->db = new \PDO('sqlite:' . DB_PATH);
+        $this->db = new \PDO('sqlite:'.DB_PATH);
     }
 
     /**
@@ -21,7 +21,7 @@ class User
      *
      * @return array|null
      */
-    public function getUser(string $username, string $password):? array
+    public function get(string $username, string $password):? array
     {
         try {
             $statement = $this->db->prepare(
@@ -36,7 +36,10 @@ class User
             $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
             if (count($result)
-                && $password == $result[0]['password']
+                && password_verify(
+                    $password,
+                    $result[0]['password']
+                )
             ) {
                 return [
                     'username' => $username,
@@ -50,5 +53,6 @@ class User
 
         return null;
     }
+
 }
 

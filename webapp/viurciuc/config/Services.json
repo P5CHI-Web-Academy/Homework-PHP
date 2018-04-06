@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "class": {
+      "abstract": "App\\Services\\API\\GitInterface",
+      "default": "App\\Services\\API\\Github"
+    }
+  }
+}
