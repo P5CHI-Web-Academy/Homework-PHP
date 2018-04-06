@@ -13,19 +13,6 @@ class User
     public function __construct()
     {
         $this->dbc = new \PDO('sqlite:ecerednicenko.db');
-
-        try {
-            $this->dbc->exec(
-                'CREATE TABLE IF NOT EXISTS `homework3` (
-              `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-              `login` varchar(24) NOT NULL,
-              `password` varchar(24) NOT NULL
-              )'
-            );
-
-        } catch (\PDOException $e) {
-            die($e->getMessage());
-        }
     }
 
     /**
@@ -35,14 +22,13 @@ class User
      */
     public function loginValidator($login, $password)
     {
-        $sql = "SELECT count(*) FROM `homework3` 
-                  WHERE `login`=:login AND `password`=:password";
+        $sql = "SELECT * FROM `homework3` 
+                  WHERE `login`=:login";
 
         $query = $this->dbc->prepare($sql);
-        $query->execute([':login' => $login, ':password' => $password]);
+        $query->execute([':login' => $login]);
+        $userData = $query->fetch(\PDO::FETCH_ASSOC);
 
-        $count = $query->fetch(\PDO::FETCH_NUM)[0];
-
-        return !!$count;
+        return password_verify($password, $userData['password']);
     }
 }

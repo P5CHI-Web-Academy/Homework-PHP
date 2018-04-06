@@ -1,35 +1,37 @@
 <?php
 
-use App\Controllers\LoginController;
+use App\Components\Container;
 
 /**
  * Class Router
  */
 class Router
 {
+    protected $routes = [
+        '/' => 'LoginController/index',
+        '/login' => 'LoginController/postLogin',
+        '/logout' => 'LoginController/logout',
+    ];
+
     public function run()
     {
+        $containerData = [];
+
         $request_uri = explode('?', $_SERVER['REQUEST_URI'], 2);
 
-        switch ($request_uri[0]) {
-            case '/':
-                if (empty($_SESSION['auth'])) {
-                    require dirname(__DIR__).'/Views/beforeLogin/index.php';
-                } else {
-                    $content = file_get_contents(dirname(__DIR__).'/Views/afterLogin/index.php');
-                    $content = preg_replace('/{login}/', $_SESSION['name'], $content);
-                    echo $content;
-                }
-                break;
-            case '/login':
-                require dirname(__DIR__).'/Controllers/LoginController.php';
-                $newLogin = new LoginController();
-                $newLogin->postLogin();
-                break;
-            case '/logout':
-                $logout = new LoginController();
-                $logout->logout();
-                break;
+        if (isset($this->routes[$request_uri[0]])) {
+            $containerData = explode('/', $this->routes[$request_uri[0]]);
         }
+
+        $class = 'App\Controllers\\' . $containerData[0];
+        $method = $containerData[1];
+
+        try {
+            $controller = Container::instance()->get($class);
+        } catch (\Exception $e) {
+            die('Error');
+        }
+
+        $controller->$method();
     }
 }
