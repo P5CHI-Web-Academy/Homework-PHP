@@ -11,6 +11,7 @@ use Webapp\Service\Session;
 use Webapp\Service\Security;
 use Webapp\Service\Template;
 use Webapp\Service\ServiceContainer;
+use Webapp\Service\UserReposInfoProvider;
 use Webapp\Controller\AppController;
 use Webapp\Template\ForControlStructure;
 use Webapp\Template\IfControlStructure;
@@ -63,6 +64,13 @@ class WebApp
             ->addControlStructure(new IfControlStructure())
             ->addControlStructure(new ForControlStructure());
         $this->services->add('template', $template);
+        $this->services->add(
+            'repos_info_provider',
+            new UserReposInfoProvider(
+                $this->services->get('github_client'),
+                $this->services->get('session')
+            )
+        );
         $this->services->add(
             'security',
             new Security(

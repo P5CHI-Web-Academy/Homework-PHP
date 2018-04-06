@@ -3,6 +3,7 @@
 namespace Webapp\Controller;
 
 use Webapp\Service\Security;
+use Webapp\Service\UserReposInfoProvider;
 
 class AppController extends AbstractController
 {
@@ -20,25 +21,33 @@ class AppController extends AbstractController
 
         $user = $security->getLoggedUser();
 
-        $profileLink = $this->services->get('github_client')
-                ->getProfileLink($user->getUserName()) ?? '';
+        /** @var UserReposInfoProvider $infoProvider */
+        $infoProvider = $this->services->get('repos_info_provider');
+        $profileLink = $infoProvider->getUserProfileLink($user->getUserName());
 
-        $profile = '';
+        $profileData = [];
+        $repoData = [];
+        $profile = false;
         if ($profileLink) {
-            $profile = $this->renderPartial(
-                'profile.html',
-                [
-                    'link' => $profileLink,
-                    'linkTitle' => \sprintf('%s Profile', $user->getFullName()),
-                ]
-            );
+            $profile = true;
+            $profileData = [
+                'link' => $profileLink,
+                'linkTitle' => \sprintf('%s Profile', $user->getFullName()),
+            ];
+            $sortByField = $_GET['sort_by'] ?? '';
+            $repoData = $infoProvider->getUserReposData($user->getUserName(), $sortByField);
         }
 
-        $result = [
-            'title' => \sprintf('Hello %s', $user->getFullName()),
-            'fullName' => $user->getFullName(),
-            'profile' => $profile,
-        ];
+        $result = \array_merge(
+            [
+                'title' => \sprintf('Hello %s', $user->getFullName()),
+                'fullName' => $user->getFullName(),
+                'profile' => $profile,
+                'repoData' => $repoData,
+                'isLoggedIn' => true,
+            ],
+            $profileData
+        );
 
         return $this->render('index.html', $result);
     }
@@ -77,6 +86,8 @@ class AppController extends AbstractController
                 'user_name' => $userName,
                 'error' => $error,
                 'title' => $title,
+                'profile' => '',
+                'isLoggedIn' => false,
             ]
         );
     }

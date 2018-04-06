@@ -83,7 +83,7 @@ class SecurityTest extends TestCase
         $sessionStub = $this->createMock(Session::class);
         $userDAOStub = $this->createMock(UserDAO::class);
         $passwordHelperStub = $this->createMock(PasswordHelper::class);
-        $sessionStub->expects($this->once())->method('remove');
+        $sessionStub->expects($this->once())->method('destroy');
 
         $security = new Security($sessionStub, $userDAOStub, $passwordHelperStub);
 

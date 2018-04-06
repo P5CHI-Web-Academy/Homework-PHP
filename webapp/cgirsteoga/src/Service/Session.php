@@ -36,6 +36,11 @@ class Session
         return isset($_SESSION[$key]);
     }
 
+    public function destroy()
+    {
+        session_destroy();
+    }
+
     /**
      * @param string $key
      */

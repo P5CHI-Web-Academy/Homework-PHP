@@ -57,7 +57,7 @@ class Security
 
     public function logout()
     {
-        $this->session->remove(static::USER_ID);
+        $this->session->destroy();
     }
 
     /**
