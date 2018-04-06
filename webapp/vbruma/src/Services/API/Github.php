@@ -18,13 +18,28 @@ class Github implements GitInterface
     private $userInfo = [];
 
     /**
+     * @var CurlClient
+     */
+    private $curlClient;
+
+    /**
+     * Github constructor.
+     *
+     * @param CurlClient $curlClient
+     */
+    public function __construct(CurlClient $curlClient)
+    {
+        $this->curlClient = $curlClient;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getUser($username): array
     {
         $url = $this->baseUrl . 'users/' . $username;
 
-        $response = json_decode(CurlClient::request($url, 'GET'), true);
+        $response = json_decode($this->curlClient->request($url, 'GET'), true);
 
         $this->userInfo = is_array($response) ? $response : [];
 
@@ -36,11 +51,11 @@ class Github implements GitInterface
      */
     public function getProfileLink($username): string
     {
-        if (empty($userInfo)) {
+        if (empty($this->userInfo)) {
             $this->getUser($username);
         }
 
-        return $this->userInfo['html_url'];
+        return isset($this->userInfo['html_url']) ? $this->userInfo['html_url'] : '';
     }
 }
 

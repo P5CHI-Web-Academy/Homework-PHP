@@ -8,6 +8,6 @@ define('CONFIG_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../config/');
 
 $requestVars = array_merge($_GET, $_POST);
 
-$kernel = new \App\Kernel($requestVars);
-$kernel->handle();
+$kernel = new \App\Kernel($requestVars, CONFIG_PATH);
+$kernel->handle($_SERVER['REQUEST_URI']);
 

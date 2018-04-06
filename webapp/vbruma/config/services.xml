@@ -6,6 +6,10 @@
             <abstract>App\Services\API\GitInterface</abstract>
             <default>App\Services\API\Github</default>
         </class>
+        <class>
+            <abstract>App\Services\Session\SessionAdapter</abstract>
+            <default>App\Services\Session\GlobalSession</default>
+        </class>
     </dependencies>
 </configuration>
 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Model\UserRepository;
+use App\Services\Session\SessionAdapter;
 
 class AuthService
 {
@@ -13,13 +14,35 @@ class AuthService
     private $user = [];
 
     /**
+     * @var SessionAdapter
+     */
+    private $session;
+
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * AuthService constructor.
+     *
+     * @param SessionAdapter $session
+     * @param UserRepository $userRepository
+     */
+    public function __construct(SessionAdapter $session, UserRepository $userRepository)
+    {
+        $this->session = $session;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
      * Check if user is logged in
      *
      * @return bool
      */
     public function isAuthenticated(): bool
     {
-        return isset($_SESSION['username']);
+        return ($this->session->get('username') !== null);
     }
 
     /**
@@ -35,13 +58,11 @@ class AuthService
             return false;
         }
 
-        $userRepository = new UserRepository();
-        $userInfo = $userRepository->get($request['username'], $request['password']);
-
+        $userInfo = $this->userRepository->get($request['username'], $request['password']);
 
         if ($userInfo !== null) {
             $this->user = $userInfo;
-            $_SESSION['username'] = $this->user['username'];
+            $this->session->set('username', $this->user['username']);
 
             return true;
         }
@@ -56,8 +77,8 @@ class AuthService
      */
     public function logout(): bool
     {
-        if (isset($_SESSION['username'])) {
-            unset($_SESSION['username']);
+        if ($this->session->get('username') !== null) {
+            $this->session->set('username', null);
         }
 
         return true;
