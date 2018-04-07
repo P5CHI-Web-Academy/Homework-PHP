@@ -1,2 +1,4 @@
 /coverage/
 /vendor/
+/web/start_server.sh
+/start_test.sh

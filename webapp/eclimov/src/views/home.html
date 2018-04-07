@@ -6,6 +6,32 @@
 </head>
 <body>
     Hello, {{user_name}}!
-    <br>{{github_profile_url}}
+    <br>{{github_profile_url}}<br>
+    {% if repos_count %}
+        <table border="1" style="border-collapse: collapse">
+            <tr>
+                <th>
+                    <a href="?order_by=name">Name</a>
+                </th>
+                <th>
+                    <a href="?order_by=updated_at">Updated Date</a>
+                </th>
+                <th>
+                    <a href="?order_by=html_url">Link</a>
+                </th>
+                <th>
+                    <a href="?order_by=commits">Commits</a>
+                </th>
+            </tr>
+            {% foreach repos as repo %}
+                <tr>
+                    <td>{{repo.name}}</td>
+                    <td>{{repo.updated_at}}</td>
+                    <td>{{repo.html_url}}</td>
+                    <td>{{repo.commits}}</td>
+                </tr>
+            {% endforeach %}
+        </table>
+    {% endif %}
 </body>
 </html>
