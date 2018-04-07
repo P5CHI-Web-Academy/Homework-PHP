@@ -15,7 +15,7 @@ class Github extends Service
 
     public function get_user(string $login)
     {
-        if($api_result = $this->get_api_result('users/'.$login.'/')){
+        if($api_result = $this->get_api_result('users/'.$login)){
             if($result_processed = $this->process_api_result($api_result)){
                 return array(
                     'name' => $result_processed['name'],
