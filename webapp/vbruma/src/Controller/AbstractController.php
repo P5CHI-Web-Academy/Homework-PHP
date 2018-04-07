@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Services\Session\SessionAdapter;
+use App\Services\TemplateParser;
 
 abstract class AbstractController
 {
@@ -17,13 +18,20 @@ abstract class AbstractController
     protected $session;
 
     /**
+     * @var TemplateParser
+     */
+    private $templateParser;
+
+    /**
      * AbstractController constructor.
      *
      * @param SessionAdapter $session
+     * @param TemplateParser $templateParser
      */
-    public function __construct(SessionAdapter $session)
+    public function __construct(SessionAdapter $session, TemplateParser $templateParser)
     {
         $this->session = $session;
+        $this->templateParser = $templateParser;
     }
 
     /**
@@ -43,26 +51,30 @@ abstract class AbstractController
      *
      * @param string $fileName
      * @param array $vars
+     * @throws \Exception
      */
     protected function renderTemplate(string $fileName, array $vars = []): void
     {
         $content = \file_get_contents($this->templatePath . $fileName);
         $viewVars = array_merge($vars, [
-            'errorDisplay' => 'none'
+            'hasError' => false,
+            'error' => '',
+            'items' => [
+                ['name' => 'lol', 'something' => 'nope'],
+                ['name' => 'lol2', 'something' => 'nope2']
+            ]
         ]);
 
         // check session error variable
         if ($this->session->get('error')) {
-            $viewVars['errorDisplay'] = 'block';
+            $viewVars['hasError'] = true;
             $viewVars['error'] = 'Username and/or password is invalid';
 
             $this->session->set('error', null);
         }
 
-        foreach ($viewVars as $key => $value) {
-            $content = str_replace('{{ '.$key.' }}', $value, $content);
-        }
+        $parsedContent = $this->templateParser->parse($content, $viewVars);
 
-        echo($content);
+        echo($parsedContent);
     }
 }

@@ -19,5 +19,18 @@ interface GitInterface
      * @return string
      */
     public function getProfileLink($username): string;
+
+    /**
+     * @param $username
+     * @return array
+     */
+    public function getRepositories($username): array;
+
+    /**
+     * @param $username
+     * @param $repository
+     * @return array
+     */
+    public function getRepositoryCommits($username, $repository): array;
 }
 

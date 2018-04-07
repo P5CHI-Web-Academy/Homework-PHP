@@ -58,7 +58,6 @@ class Kernel
             try {
                 $controller = Container::instance()->get($controllerPath);
             } catch (\Exception $e) {
-                var_dump($e->getMessage());exit();
                 $this->stopExecution('Project has missing or invalid configuration', 'HTTP/1.1 422 Unprocessable Entity');
             }
 
