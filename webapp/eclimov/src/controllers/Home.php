@@ -18,6 +18,24 @@ class Home extends Controller
 
             if($github_user=$github_api->get_user($user_info['login'])){
                 $variables['github_profile_url'] = $github_user['url'];
+                $repositories = $github_api->get_user_repositories($user_info['login']);
+                $variables['repos_count'] = \count($repositories);
+                foreach ($repositories as $repository){
+                    $variables['repos'][] = array(
+                        'name' => $repository['name'],
+                        'updated_at' => date('Y-m-d', strtotime($repository['updated_at'])),
+                        'html_url' => $repository['html_url'],
+                        'commits' => \count(
+                            $github_api->get_repository_commits($user_info['login'], $repository['name'])
+                        )
+                    );
+                }
+                if(isset($_GET['order_by'])){
+                    $order_by = $_GET['order_by'];
+                    usort($variables['repos'], function ($item1, $item2) use ($order_by){
+                        return strtolower($item1[$order_by]) <=> strtolower($item2[$order_by]);
+                    });
+                }
             }
 
             $this->output_template($variables);

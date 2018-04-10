@@ -10,12 +10,12 @@ class Github extends Service
 
     public function __construct()
     {
-        $this->api_url = 'https://api.github.com/users/';
+        $this->api_url = 'https://api.github.com';
     }
 
     public function get_user(string $login)
     {
-        if($api_result = $this->get_api_result($login)){
+        if($api_result = $this->get_api_result('users/'.$login)){
             if($result_processed = $this->process_api_result($api_result)){
                 return array(
                     'name' => $result_processed['name'],
@@ -26,9 +26,29 @@ class Github extends Service
         return false;
     }
 
-    public function get_api_result($login){
+    public function get_user_repositories($login): array {
+        $result = array();
+        if($api_result = $this->get_api_result('users/'.$login.'/repos')){
+            if($result_processed = $this->process_api_result($api_result)){
+                $result = $result_processed;
+            }
+        }
+        return $result;
+    }
+
+    public function get_repository_commits($login, $repo): array {
+        $result = array();
+        if($api_result = $this->get_api_result('repos/'.$login.'/'.$repo.'/commits')){
+            if($result_processed = $this->process_api_result($api_result)){
+                $result = $result_processed;
+            }
+        }
+        return $result;
+    }
+
+    public function get_api_result($method){
         $options = [
-            CURLOPT_URL => $this->api_url.$login,
+            CURLOPT_URL => $this->api_url.'/'.$method,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_USERAGENT=>'Test-App'
         ];
