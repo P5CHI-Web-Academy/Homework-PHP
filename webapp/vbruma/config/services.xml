@@ -3,7 +3,7 @@
 <configuration>
     <dependencies>
         <class>
-            <abstract>App\Services\API\GitInterface</abstract>
+            <abstract>App\Services\API\AbstractGit</abstract>
             <default>App\Services\API\Github</default>
         </class>
         <class>

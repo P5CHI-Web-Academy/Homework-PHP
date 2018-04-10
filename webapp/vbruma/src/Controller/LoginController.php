@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Services\API\AbstractGit;
 use App\Services\API\GitInterface;
 use App\Services\AuthService;
 use App\Services\Session\SessionAdapter;
+use App\Services\TemplateParser;
 
 class LoginController extends AbstractController
 {
@@ -22,17 +24,23 @@ class LoginController extends AbstractController
      * LoginController constructor.
      *
      * @param AuthService $auth
-     * @param GitInterface $gitService
+     * @param AbstractGit $gitService
      * @param SessionAdapter $session
+     * @param TemplateParser $templateParser
      */
-    public function __construct(AuthService $auth, GitInterface $gitService, SessionAdapter $session)
+    public function __construct(AuthService $auth, AbstractGit $gitService,
+        SessionAdapter $session, TemplateParser $templateParser)
     {
-        parent::__construct($session);
+        parent::__construct($session, $templateParser);
 
         $this->auth = $auth;
         $this->gitService = $gitService;
     }
 
+    /**
+     * @param array $request
+     * @throws \Exception
+     */
     public function index(array $request = [])
     {
         if ($this->auth->isAuthenticated()) {
@@ -41,11 +49,30 @@ class LoginController extends AbstractController
                     'userGitLink',
                     $this->gitService->getProfileLink($this->session->get('username'))
                 );
+
+                $this->session->set(
+                    'userRepos',
+                    $this->gitService->getRepositoriesWithCommitCount($this->session->get('username'))
+                );
+            }
+
+            // sort if specified
+            $repositoryInfo = $this->session->get('userRepos');
+
+            if (isset($request['orderBy'])) {
+                usort ($repositoryInfo, function($a, $b) use ($request) {
+                    if ($a[$request['orderBy']] == $b[$request['orderBy']]) {
+                        return 0;
+                    }
+
+                    return ($a[$request['orderBy']] < $b[$request['orderBy']]) ? -1 : 1;
+                } );
             }
 
             $this->renderTemplate('main/index.php', [
                 'gitLink' => $this->session->get('userGitLink'),
-                'username' => $this->session->get('username')
+                'username' => $this->session->get('username'),
+                'gitRepoInfo' => $repositoryInfo
             ]);
 
             return;

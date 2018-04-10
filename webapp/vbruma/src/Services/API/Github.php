@@ -5,7 +5,7 @@ namespace App\Services\API;
 
 use App\Services\CurlClient;
 
-class Github implements GitInterface
+class Github extends AbstractGit
 {
     /**
      * @var string Github api url
@@ -56,6 +56,30 @@ class Github implements GitInterface
         }
 
         return isset($this->userInfo['html_url']) ? $this->userInfo['html_url'] : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepositories($username): array
+    {
+        $url = $this->baseUrl . 'users/' . $username . '/repos';
+
+        $response = json_decode($this->curlClient->request($url, 'GET'), true);
+
+        return is_array($response) ? $response : [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepositoryCommits($username, $repository): array
+    {
+        $url = $this->baseUrl . 'repos/' . $username . '/' . $repository . '/commits';
+
+        $response = json_decode($this->curlClient->request($url, 'GET'), true);
+
+        return is_array($response) ? $response : [];
     }
 }
 

@@ -28,7 +28,9 @@
 
     <br />
 
-    <div class="alert alert-danger" role="alert" style="display: {{ errorDisplay }}">{{ error }}</div>
+    {% if hasError %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
 
 </form>
 </body>

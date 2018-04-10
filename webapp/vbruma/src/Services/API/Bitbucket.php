@@ -5,7 +5,7 @@ namespace App\Services\API;
 
 use App\Services\CurlClient;
 
-class Bitbucket implements GitInterface
+class Bitbucket extends AbstractGit
 {
     /**
      * @var string Github api url
@@ -56,6 +56,24 @@ class Bitbucket implements GitInterface
         }
 
         return isset($this->userInfo['links']['html']['href']) ? $this->userInfo['links']['html']['href'] : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepositories($username): array
+    {
+
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepositoryCommits($username, $repository): array
+    {
+
+        return [];
     }
 }
 

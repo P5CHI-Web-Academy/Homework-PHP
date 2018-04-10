@@ -23,6 +23,24 @@
         <h1 class="cover-heading">Hello {{ username }}</h1>
         <p>Here is your <a class="alert-link" target="_blank"
                     href="{{ gitLink }}">git profile</a></p>
+        <h4>Repository list</h4>
+        <table class="table-bordered">
+            <tr>
+                <th><a href="/?orderBy=name">Name</a></th>
+                <th><a href="/?orderBy=updated_at">Updated date</a></th>
+                <th><a href="/?orderBy=html_url">Link</a></th>
+                <th><a href="/?orderBy=commitCount">Commits</a></th>
+            </tr>
+            {% for repo in gitRepoInfo %}
+            <tr>
+                <td>{{ repo['name'] }}</td>
+                <td>{{ repo['updated_at'] }}</td>
+                <td><a href="{{ repo['html_url'] }}" target="_blank">{{ repo['html_url'] }}</a></td>
+                <td>{{ repo['commitCount'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br /><br />
         <p class="lead">
             <a href="/logout" class="btn btn-lg btn-secondary">Log out</a>
         </p>
