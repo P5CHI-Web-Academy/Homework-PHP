@@ -1,8 +1,15 @@
 <form method="post">
-    <div class="error">{{error}}</div>
-    <label for="user_name">User name</label>
-    <input type="text" value="{{user_name}}" id="user_name" name="user_name" placeholder="user1"/>
-    <label for="password">Password</label>
-    <input type="password" value="{{password}}" id="password" name="password" placeholder="user1"/>
-    <input type="submit" value="Login">
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <div class="form-group">
+        <label for="user_name">User name</label>
+        <input type="text" class="form-control" value="{{user_name}}" name="user_name" id="user_name"
+               placeholder="gconstantin">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" value="{{password}}" id="password" name="password" placeholder="1"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
 </form>

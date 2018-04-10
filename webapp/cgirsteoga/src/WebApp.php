@@ -11,7 +11,10 @@ use Webapp\Service\Session;
 use Webapp\Service\Security;
 use Webapp\Service\Template;
 use Webapp\Service\ServiceContainer;
+use Webapp\Service\UserReposInfoProvider;
 use Webapp\Controller\AppController;
+use Webapp\Template\ForControlStructure;
+use Webapp\Template\IfControlStructure;
 
 
 class WebApp
@@ -52,12 +55,22 @@ class WebApp
     {
         $this->services->add('db', new \PDO(self::DSN));
         $this->services->add('userDAO', new UserDAO($this->services->get('db')));
-        $this->services->add('template', new Template());
         $this->services->add('router', new Router($this->services, $_SERVER['HTTP_HOST']));
         $this->services->add('session', new Session());
         $this->services->add('http_client', new CurlClient());
         $this->services->add('github_client', new Client($this->services->get('http_client')));
         $this->services->add('pass_helper', new PasswordHelper());
+        $template = (new Template())
+            ->addControlStructure(new IfControlStructure())
+            ->addControlStructure(new ForControlStructure());
+        $this->services->add('template', $template);
+        $this->services->add(
+            'repos_info_provider',
+            new UserReposInfoProvider(
+                $this->services->get('github_client'),
+                $this->services->get('session')
+            )
+        );
         $this->services->add(
             'security',
             new Security(
